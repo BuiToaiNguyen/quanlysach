@@ -14,7 +14,7 @@ namespace quanlysach.Areas.Admin.Controllers
         // GET: Admin/AdminHome
         public ActionResult Index()
         {
-            if (Session["user"]==null)
+            if (Session["user"]==null || Session["permission"] == null)
             {
                 Response.Redirect($"{IPGlobalProperties.GetIPGlobalProperties().DomainName}/home/Index");
 
@@ -30,6 +30,8 @@ namespace quanlysach.Areas.Admin.Controllers
 
 
         }
+
+       
 
         [HttpPost]
         public JsonResult AddBook( FormCollection form)
@@ -56,7 +58,28 @@ namespace quanlysach.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteBook(FormCollection form)
+        public JsonResult EditBook(FormCollection form)
+        {
+            JsonResult js = new JsonResult();
+            int id = Convert.ToInt32(form["id"]);
+            var name = form["name"];
+            var nameauthor = form["nameauthor"];
+            int idctg = Convert.ToInt32(form["idctg"]);
+            float price = float.Parse(form["price"]);
+            DBIO db = new DBIO();
+
+            db.EditBook(id,name,nameauthor,idctg,price);
+            db.Save();
+            js.Data = new
+            {
+                status = "OK"
+            };
+            return Json(js, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult DeleteBook(FormCollection form)
         {
             JsonResult js = new JsonResult();
             int id = Convert.ToInt32( form["id"]);

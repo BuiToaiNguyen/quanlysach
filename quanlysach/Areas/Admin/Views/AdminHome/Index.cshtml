@@ -8,7 +8,8 @@
 
 }
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary text-center " data-mdb-toggle="modal" data-mdb-target="#exampleModal" style="margin: 20px 0">
+<button type="button" class="btn btn-primary text-center " data-mdb-toggle="modal" data-mdb-target="#exampleModal" style="margin: 20px 0" onclick="AddBook()
+    ">
     thêm sách
 </button>
 
@@ -28,7 +29,7 @@
                     <input type="text" id="nameauthor" class="form-control" placeholder="nhập tác giả" />
                 </div>
                 <div class="form-outline">
-                    <input type="text" id="price" class="form-control" placeholder="nhập giá sách" />
+                    <input type="number" id="price" class="form-control" placeholder="nhập giá sách" />
                 </div>
                 <div class="form-outline">
 
@@ -50,10 +51,11 @@
                 </div>
 
             </div>
+            <input type="text" id="id" class="form-control" hidden visible />
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">hủy bỏ</button>
-                <div type="button" class="btn btn-primary" onclick="AddBook()" id="boxAddBook">thêm sách</div>
+                <div type="button" class="btn btn-primary" onclick="SaveClick()" id="boxAddBook"> Lưu</div>
             </div>
         </div>
     </div>
@@ -93,7 +95,17 @@
                 <td>@listBook[i].price</td>
                 <td>@listBook[i].nameauthor</td>
 
-                <td><button class="btn btn-primary">Edit</button></td>
+                <td><div class="btn btn-primary" onclick="EditBook(@listBook[i].idbook)" id="btnclick-@listBook[i].idbook"
+                            
+                            data-mdb-toggle="modal" 
+                            data-mdb-target="#exampleModal" 
+                            data-id=@listBook[i].idbook
+                            data-name="@listBook[i].name"
+                            data-nameauthor="@listBook[i].nameauthor"
+                            data-idctg="@listBook[i].idctg"
+                            data-price="@listBook[i].price"
+
+                            >Edit</div></td>
                 <td><div class="btn btn-danger" onclick="DeleteBook(@listBook[i].idbook,'@listBook[i].name')">Delete</div></td>
 
             </tr>
@@ -105,10 +117,11 @@
 </table>
 
 <script>
+    isEdit = false;
 
     function DeleteBook(id, name) {
         if (confirm("bạn có muốn xóa quyển " + name + " không") == true) {
-            form = new FormData();
+            var form = new FormData();
             form.append("id", id);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/AdminHome/DeleteBook", true);
@@ -135,39 +148,105 @@
     }
 
     function AddBook() {
-        var name = $("#namebook").val();
-        var nameauthor = $("#nameauthor").val();
-        var idctg = $("#idctg").val();
-        var price = $("#price").val();
-        var messAdd = $("#messAdd");
-        if (name == "" || nameauthor == "" || price == "") {
-            messAdd.html("vui lòng nhập đầy đủ")
+        isEdit = false;
+
+
+    }
+
+    function EditBook(id) {
+        var id = $(`#btnclick-${id}`).data("id")
+        $("#id").val(id)
+        var name = $(`#btnclick-${id}`).data("name")
+
+        $("#namebook").val(name)
+        var nameauthor = $(`#btnclick-${id}`).data("nameauthor")
+
+        $("#nameauthor").val(nameauthor)
+        var idctg = $(`#btnclick-${id}`).data("idctg")
+        $("#idctg").val(idctg)
+        var price = $(`#btnclick-${id}`).data("price")
+        $("#price").val(price);
+
+        //$("#nameauthor") = $(`#btnclick-${id}`).data("nameauthor")
+        // $("#idctg") = $(`#btnclick-${id}`).data("nameauthor")
+
+        isEdit = true
+    }
+
+    function SaveClick() {
+        if (!isEdit) {
+
+
+            var name = $("#namebook").val();
+            var nameauthor = $("#nameauthor").val();
+            var idctg = $("#idctg").val();
+            var price = $("#price").val();
+            var messAdd = $("#messAdd");
+            if (name == "" || nameauthor == "" || price == "") {
+                messAdd.html("vui lòng nhập đầy đủ")
+            } else {
+                var form = new FormData();
+                form.append("name", name);
+                form.append("nameauthor", nameauthor);
+                form.append("idctg", idctg);
+                form.append("price", price);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/AdminHome/AddBook", true);
+
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var content = xhr.responseText
+                        var json_ct = JSON.parse(content);
+                        if (json_ct.Data.status == "OK") {
+                            window.location = "/Admin/AdminHome/Index";
+
+
+                        }
+                    }
+                }
+                xhr.send(form);
+
+
+            }
         } else {
+            var id = $("#id").val();
+            var name = $("#namebook").val();
+            var nameauthor = $("#nameauthor").val();
+            var idctg = $("#idctg").val();
+            var price = $("#price").val();
+            var messAdd = $("#messAdd");
+            if (name == "" || nameauthor == "" || price == "") {
+                messAdd.html("vui lòng nhập đầy đủ")
+            } else {
+
+
+            
             var form = new FormData();
+            form.append("id", id)
             form.append("name", name);
             form.append("nameauthor", nameauthor);
             form.append("idctg", idctg);
-            form.append("price", price);
+            form.append("price", price)
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/AdminHome/AddBook", true);
-
-
+            xhr.open("POST", "/AdminHome/EditBook", true);
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var content = xhr.responseText
                     var json_ct = JSON.parse(content);
                     if (json_ct.Data.status == "OK") {
                         window.location = "/Admin/AdminHome/Index";
-                        s
-                      
+
+
+
                     }
                 }
+
             }
-            xhr.send(form);
-
-
+            xhr.send(form)
+            }
         }
     }
-
 </script>

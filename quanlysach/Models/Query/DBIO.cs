@@ -28,6 +28,8 @@ namespace quanlysach.Models.Query
             return db.Books.Where(c => c.idbook == id).FirstOrDefault();
         }
 
+     
+
 
 
 
@@ -47,9 +49,15 @@ namespace quanlysach.Models.Query
 
         public void AddBook(string name, string nameauthor,int idctg,float price)
         {
-            string sql = $"insert into Book(name,nameauthor,idctg,price) values('{name}','{nameauthor}',{idctg},{price})";
+            string sql = $"insert into Book(name,nameauthor,idctg,price) values(N'{name}',N'{nameauthor}',{idctg},{price})";
             db.Database.ExecuteSqlCommand(sql);
         }
+        public void EditBook(int id,string name, string nameauthor, int idctg, float price)
+        {
+            string sql = $" update book set name=N'{name}', nameauthor=N'{nameauthor}',idctg={idctg},price={price} where idbook= {id}";
+            db.Database.ExecuteSqlCommand(sql);
+        }
+
 
 
         public void Save()
