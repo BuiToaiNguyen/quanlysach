@@ -1,0 +1,173 @@
+﻿@using quanlysach.Models.DB
+@model List<quanlysach.Models.DB.Book>
+@{
+    ViewBag.Title = "Index";
+    var index = 1;
+    var listCate = @ViewBag.listCate;
+    var listBook = @ViewBag.listBook;
+
+}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary text-center " data-mdb-toggle="modal" data-mdb-target="#exampleModal" style="margin: 20px 0">
+    thêm sách
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-outline">
+                    <input type="text" id="namebook" class="form-control" placeholder="nhập tên sách" />
+                </div>
+                <div class="form-outline">
+                    <input type="text" id="nameauthor" class="form-control" placeholder="nhập tác giả" />
+                </div>
+                <div class="form-outline">
+                    <input type="text" id="price" class="form-control" placeholder="nhập giá sách" />
+                </div>
+                <div class="form-outline">
+
+                    <label for="cars">chọn loại sách:</label>
+
+                    <select id="idctg">
+                        @for (var j = 0; j < listCate.Count; j++)
+                        {
+                            <option value="@listCate[j].idcate">@listCate[j].nametype</option>
+
+                        }
+
+
+                    </select>
+
+                </div>
+                <div class="form-outline">
+                    <p style="color:red" id="messAdd"></p>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">hủy bỏ</button>
+                <div type="button" class="btn btn-primary" onclick="AddBook()" id="boxAddBook">thêm sách</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-success table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">tên sách</th>
+            <th scope="col">thể loại</th>
+            <th scope="col">giá</th>
+            <th scope="col">tác giả</th>
+
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+
+        </tr>
+    </thead>
+    <tbody id="table-row">
+
+        @for (var i = 0; i < listBook.Count; i++)
+        {
+            <tr id="id-@listBook[i].idbook">
+                <td scope="row">@index</td>
+                <td>@listBook[i].name</td>
+                @for (var j = 0; j < listCate.Count; j++)
+                {
+                    if (listBook[i].idctg == listCate[j].type)
+                    {
+                        <td>@listCate[j].nametype</td>
+                    }
+
+                }
+
+                <td>@listBook[i].price</td>
+                <td>@listBook[i].nameauthor</td>
+
+                <td><button class="btn btn-primary">Edit</button></td>
+                <td><div class="btn btn-danger" onclick="DeleteBook(@listBook[i].idbook,'@listBook[i].name')">Delete</div></td>
+
+            </tr>
+            index++;
+        }
+
+
+    </tbody>
+</table>
+
+<script>
+
+    function DeleteBook(id, name) {
+        if (confirm("bạn có muốn xóa quyển " + name + " không") == true) {
+            form = new FormData();
+            form.append("id", id);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/AdminHome/DeleteBook", true);
+
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var content = xhr.responseText
+                    var json_ct = JSON.parse(content);
+                    if (json_ct.Data.status == "OK") {
+                        var bookdelete = $(`#id-${id}`);
+                        console.log("oke");
+                        bookdelete.remove();
+                    } else {
+                        console.log("fail");
+
+                    }
+                }
+            }
+            xhr.send(form);
+        }
+
+
+    }
+
+    function AddBook() {
+        var name = $("#namebook").val();
+        var nameauthor = $("#nameauthor").val();
+        var idctg = $("#idctg").val();
+        var price = $("#price").val();
+        var messAdd = $("#messAdd");
+        if (name == "" || nameauthor == "" || price == "") {
+            messAdd.html("vui lòng nhập đầy đủ")
+        } else {
+            var form = new FormData();
+            form.append("name", name);
+            form.append("nameauthor", nameauthor);
+            form.append("idctg", idctg);
+            form.append("price", price);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/AdminHome/AddBook", true);
+
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var content = xhr.responseText
+                    var json_ct = JSON.parse(content);
+                    if (json_ct.Data.status == "OK") {
+                        window.location = "/Admin/AdminHome/Index";
+                        s
+                      
+                    }
+                }
+            }
+            xhr.send(form);
+
+
+        }
+    }
+
+</script>

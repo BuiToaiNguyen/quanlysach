@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="box-login">
+    
+
+
+    <form>
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <input type="text" class="form-control" id="name" placeholder="nhập tên" />
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <input type="password" id="password" class="form-control" placeholder="nhập mật khẩu" />
+        </div>
+
+        <!-- 2 column grid layout for inline styling -->
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+                <!-- Checkbox -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="form2Example34" checked />
+                    <label class="form-check-label" for="form2Example34"> Remember me </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <!-- Simple link -->
+                <a href="#!">Forgot password?</a>
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="btn btn-primary btn-block mb-4"  onclick="login()">Sign in</div>
+       
+
+        <!-- Register buttons -->
+        <div class="text-center">
+            <p>Not a member? <a href="#!">Register</a></p>
+            <p>or sign up with:</p>
+            <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fab fa-facebook-f"></i>
+            </button>
+
+            <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fab fa-google"></i>
+            </button>
+
+            <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fab fa-twitter"></i>
+            </button>
+
+            <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fab fa-github"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    var islogin = false;
+    function login() {
+        var name = $("#name").val();
+        var password = $("#password").val();
+        var mess = $("#mess");
+        if (!islogin) {
+            islogin = true;
+            console.log("i")
+
+            if (name == "" || password == " ") {
+                mess.html("vui lòng nhập đầy đủ")
+                islogin = false;
+
+            } else {
+                var form = new FormData();
+                form.append("name", name);
+                form.append("password", password);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/Login/CheckLogin", true);
+                xhr.timeout = 30000;
+                xhr.ontimeout=() => {
+                    mess.html("chưa load được");
+                    islogin = false;
+
+                }
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var js = this.responseText;
+                        var res = JSON.parse(js);
+                        console.log("hi")
+                        if (res.Data.status == "OK") {
+                            window.location = "/Admin/AdminHome/Index";
+
+                        } else {
+                            mess.html("sai tài khoản hoặc mật khẩu");
+
+                        }
+                        isLogin = false;
+
+                    }
+
+                }
+                xhr.send(form);
+
+
+            }
+        }    }
+</script>
+
