@@ -1,6 +1,6 @@
 ﻿body {
-    color:black
-    
+    color: black;
+    font-size:16px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -13,10 +13,14 @@
     height: auto;
     margin: auto;
 }
-/* Set width on the form input elements since they're 100% wide by default */
+.header_admin {
+    display: flex;
+    justify-content: space-between;
+
+}
 input,
 select,
 textarea {
-    max-width: 280px;
 }
+
 

@@ -39,7 +39,7 @@ namespace quanlysach.Controllers
             {
                 if (user.password == password)
                 {
-                    Session["user"] = user;
+                    Session["user"] = user.name;
                     Session["permission"] = null;
                     if (user.permission == 1)
                     {

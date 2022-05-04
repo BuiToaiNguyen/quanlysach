@@ -4,23 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using quanlysach.Models.DB;
+using quanlysach.Models.Query;
+
 namespace quanlysach.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(int page=1,int pageSize=12,string searchString="")
         {
-            //if (Session["user"] == null)
-            //{
-            //    Response.Redirect("/login/index");
+            DBIO db = new DBIO();
 
-            //}
-            //else
-            //{
+            var listbook = db.getListBookHome(page, pageSize, searchString);
 
-            //}
-            return View();
+
+            return View(listbook);
         }
 
         

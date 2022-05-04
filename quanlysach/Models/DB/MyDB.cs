@@ -15,9 +15,12 @@ namespace quanlysach.Models.DB
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Book>()
+                .Property(e => e.linkimg)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Books)
                 .WithOptional(e => e.Category)

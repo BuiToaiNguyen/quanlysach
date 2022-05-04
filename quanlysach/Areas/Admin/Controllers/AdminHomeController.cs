@@ -12,7 +12,7 @@ namespace quanlysach.Areas.Admin.Controllers
     public class AdminHomeController : Controller
     {
         // GET: Admin/AdminHome
-        public ActionResult Index()
+        public ActionResult Index(int page = 1,int pageSize=10,string searchString="",string searchAuthor="",int searchCate =0 )
         {
             if (Session["user"]==null || Session["permission"] == null)
             {
@@ -21,11 +21,19 @@ namespace quanlysach.Areas.Admin.Controllers
             }
 
             DBIO db = new DBIO();
-            var listBook = db.getListBook();
+            var listBook = db.getListBook(page, pageSize, searchString,searchAuthor,searchCate);
             var listCate = db.getListCategory();
             ViewBag.listBook=listBook;
             ViewBag.listcate = listCate;
-            return View();
+
+
+            ViewBag.tab = "catemanage";
+            ViewBag.index = (page - 1) * pageSize + 1; 
+            ViewBag.searchString = searchString;
+            ViewBag.searchAuthor = searchAuthor;
+            ViewBag.searchCate = searchCate;
+
+            return View(listBook);
 
 
 
@@ -41,9 +49,9 @@ namespace quanlysach.Areas.Admin.Controllers
             var nameauthor = form["nameauthor"];
             int idctg = Convert.ToInt32(form["idctg"]);
             float price  = float.Parse(form["price"]);
-
+            var linkimg = form["linkimg"];
             DBIO db= new DBIO();
-            db.AddBook(name,nameauthor,idctg,price);
+            db.AddBook(name,nameauthor,idctg,price, linkimg);
             db.Save();
             js.Data = new
             {
@@ -65,10 +73,11 @@ namespace quanlysach.Areas.Admin.Controllers
             var name = form["name"];
             var nameauthor = form["nameauthor"];
             int idctg = Convert.ToInt32(form["idctg"]);
-            float price = float.Parse(form["price"]);
+            float price = float.Parse(form["price"]);   
+            var linkimg = form["linkimg"];
             DBIO db = new DBIO();
 
-            db.EditBook(id,name,nameauthor,idctg,price);
+            db.EditBook(id,name,nameauthor,idctg,price,linkimg);
             db.Save();
             js.Data = new
             {
@@ -106,6 +115,35 @@ namespace quanlysach.Areas.Admin.Controllers
 
 
             return Json(js, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult IndexCate(string id)
+        {
+
+            DBIO db = new DBIO();
+            var listCate = db.getListCategory();
+            var listBook = db.getListBook(1,100, "","",0);
+            ViewBag.listBook= listBook;
+            ViewBag.id = id;
+            return View(listCate);
+        }
+
+        public void LogOut()
+        {
+            if (Session["user"] == null)
+            {
+                Response.Redirect($"{IPGlobalProperties.GetIPGlobalProperties().DomainName}/home/Index");
+            }
+            else
+            {
+                Session["user"] = null;
+                Session["permission"] = null;
+                Response.Redirect($"{IPGlobalProperties.GetIPGlobalProperties().DomainName}/login/Index");
+
+
+            }
+
 
         }
 

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Web;
 using quanlysach.Models.DB;
-
+using PagedList;
 
 namespace quanlysach.Models.Query
 {
@@ -38,27 +39,106 @@ namespace quanlysach.Models.Query
             return db.Users.Where(c => c.name == name).FirstOrDefault();
         }
 
-        public List<Book> getListBook()
+        public IEnumerable<Book> getListBook( int page,int pageSize,string searchString,string searchAuthor,int searchCate)
         {
-            return db.Books.ToList();
+            IQueryable<Book> model = db.Books;
+
+            if (searchCate==0)
+            {
+
+                if (string.IsNullOrEmpty(searchString))
+                {
+                    if (!string.IsNullOrEmpty(searchAuthor))
+                    {
+                        model = model.Where(x => x.nameauthor.Contains(searchAuthor));
+
+
+                    }
+
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(searchAuthor))
+                        model = model.Where(x => x.name.Contains(searchString));
+                    else
+                    {
+                        model = model.Where(x => x.name.Contains(searchString) && x.nameauthor.Contains(searchAuthor));
+
+                    }
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(searchString))
+                {
+                    if (!string.IsNullOrEmpty(searchAuthor))
+                    {
+                        model = model.Where(x => x.nameauthor.Contains(searchAuthor) && x.idctg == searchCate);
+
+
+                    }
+                    else
+                    {
+                        model = model.Where(x =>  x.idctg == searchCate);
+
+                    }
+
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(searchAuthor))
+                        model = model.Where(x => x.name.Contains(searchString) && x.idctg == searchCate);
+                    else
+                    {
+                        model = model.Where(x => x.name.Contains(searchString) && x.nameauthor.Contains(searchAuthor) && x.idctg == searchCate);
+
+                    }
+                }
+
+
+
+
+
+
+            }
+
+
+
+            return model.OrderBy(c=>c.idbook).ToPagedList(page,pageSize);
         }
+
+        public IEnumerable<Book> getListBookHome(int page,int pageSize,string searchString)
+        {
+            IQueryable<Book> model = db.Books;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                model=model.Where(x => x.name.Contains(searchString));
+            }
+
+            return model.OrderBy(c=>c.idbook).ToPagedList(page, pageSize);
+    }
         public List<Category> getListCategory()
         {
             return db.Categories.ToList();
         }
 
-        public void AddBook(string name, string nameauthor,int idctg,float price)
+        public void AddBook(string name, string nameauthor,int idctg,float price,string linkimg)
         {
-            string sql = $"insert into Book(name,nameauthor,idctg,price) values(N'{name}',N'{nameauthor}',{idctg},{price})";
+            string sql = $"insert into Book(name,nameauthor,idctg,price,linkimg) values(N'{name}',N'{nameauthor}',{idctg},{price},N'{linkimg}')";
             db.Database.ExecuteSqlCommand(sql);
         }
-        public void EditBook(int id,string name, string nameauthor, int idctg, float price)
+        public void EditBook(int id,string name, string nameauthor, int idctg, float price,string linkimg)
         {
-            string sql = $" update book set name=N'{name}', nameauthor=N'{nameauthor}',idctg={idctg},price={price} where idbook= {id}";
+            string sql = $" update book set name=N'{name}', nameauthor=N'{nameauthor}',idctg={idctg},price={price}, linkimg='{linkimg}' where idbook= {id}";
             db.Database.ExecuteSqlCommand(sql);
         }
 
+        public List<Category>  GetAllCategory()
+        {
+            return db.Categories.ToList();
+        }
 
+     
 
         public void Save()
         {

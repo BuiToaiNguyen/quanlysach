@@ -18,8 +18,6 @@ namespace quanlysach.Models.DB
         [Key]
         public int idcate { get; set; }
 
-        public int? type { get; set; }
-
         [StringLength(255)]
         public string nametype { get; set; }
 

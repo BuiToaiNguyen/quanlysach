@@ -1,7 +1,62 @@
-﻿
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<quanlysach.Models.DB.Book>
 @{
     ViewBag.Title = "Index";
 }
+@section Header{
 
-<h2>đây là trang index</h2>
+    <link href="~/Content/styleHome.css" rel="stylesheet" />
+}
+<div class="container mt-4" style="background-color: white;height: 100%">
+    <div class="row " style="">
 
+        <div class="col-8">
+            
+            <div class="content">
+                <div class="row contai_content">
+                    @foreach (var item in Model)
+                    {
+                        <div class="  col-4 col-lg-3  box_content">
+                            <a href="#" class="box_content-link">
+                                <img src="@item.linkimg" class="box_img " />
+                                <h4 class="text-center text_box">@item.name </h4>
+
+                            </a>
+                        </div>
+
+                    }
+                    
+
+                    <div class="col-12 text-center">
+
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+                    </div>
+
+
+                </div>
+               
+            </div>
+        </div>
+        <div class=" col-4">
+            <h2>Liên kết hữu ích</h2>
+            <ul class="box_exten">
+                <li class="exten_item">
+                    <a href="#"><span style="color:red">1</span> Hội những người thích đọc sách</a>
+
+
+
+                </li>
+                <li class="exten_item">
+                    <a href="#"><span style="color:red">2</span> Tiếng anh thật dễ dàng</a>
+
+                </li>
+                <li class="exten_item">
+                    <a href="#"><span style="color:red">3</span> Tôi đã kiếm 1 tỉ đồng như thế nào</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

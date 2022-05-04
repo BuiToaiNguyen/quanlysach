@@ -22,6 +22,9 @@ namespace quanlysach.Models.DB
 
         public double? price { get; set; }
 
+        [StringLength(255)]
+        public string linkimg { get; set; }
+
         public virtual Category Category { get; set; }
     }
 }
