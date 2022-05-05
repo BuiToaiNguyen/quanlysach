@@ -1,0 +1,260 @@
+﻿
+@model PagedList.IPagedList<quanlysach.Models.DB.Category>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "IndexCate";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var index = 1;
+    var listBook = @ViewBag.listBook;
+    var search = @ViewBag.searchString;
+
+}
+@section Header{
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet"/>
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
+          rel="stylesheet"/>}
+
+
+<button type="button" class="btn btn-primary text-center " data-mdb-toggle="modal" data-mdb-target="#exampleModal" style="margin: 20px 0" onclick="AddBook()
+">
+        thêm danh mục
+    </button>
+
+
+    @using (Html.BeginForm("Index", "AdminCate", FormMethod.Get))
+    {
+        <div class="input-group left">
+            <div class="form-outline">
+                <input type="search" id="form1" class="form-control" name="searchString" value="@search" />
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary " style="margin-left:20px">
+                Tìm Kiếm
+            </button>
+        </div>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Loại Sách</th>
+                <th>Số Lượng</th>
+                <th>Mô Tả</th>
+                <th>Edit</th>
+                <th>Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var dem = 0;
+                <tr id="id-@item.idcate">
+                    <td>@index</td>
+                    <td>@item.nametype</td>
+
+                    @for (int i = 0; i < listBook.Count; i++)
+                    {
+                        if (item.idcate == listBook[i].idctg)
+                        {
+                            dem++;
+                        }
+                    }
+                    <td>@dem</td>
+
+                    <td>@item.decription</td>
+                    <td>
+
+                        <button class="btn btn-primary"
+                                id="btn_click-@item.idcate"
+                                data-mdb-toggle="modal"
+                                data-mdb-target="#exampleModal"
+                                data-id="@item.idcate"
+                                data-nameCate="@item.nametype"
+                                data-description="@item.decription"
+                                onclick="EditCate(@item.idcate)">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+
+                        <button class="btn btn-danger"
+                                onclick="DeleteCate(@item.idcate,'@item.nametype')">
+                            Delete
+                        </button>
+                    </td>
+
+
+
+                </tr>
+                index++;
+
+            }
+
+        </tbody>
+    </table>
+    <div class="center-block">
+        <nav aria-label="Page navigation " style="width: 200px; margin:auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = search }))
+
+        </nav>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm/Sửa sách</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="idcate" class="form-control" hidden />
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="nameCate" class="form-control" placeholder="nhập danh mục"  />
+                    </div>
+
+                    <div class="form-outline">
+                        <input type="text" id="description" class="form-control" placeholder="nhập mô tả" />
+                    </div>
+
+                    <div class="form-outline">
+                        <p style="color: red" id="messAdd"></p>
+                    </div>
+
+                </div>
+                <input type="text" id="id" class="form-control" hidden visible />
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">hủy bỏ</button>
+                    <div type="button" class="btn btn-primary" onclick="SaveClick()" id="boxAddBook"> Lưu</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var isEdit = false;
+
+        function SaveClick() {
+
+            if (!isEdit) {
+                var nameCate = $("#nameCate").val();
+                var description = $("#description").val();
+                var messAdd = $("#messAdd");
+                if (nameCate == "" || description == "") {
+                    messAdd.html("vui lòng nhập đầy đủ")
+                } else {
+                    var form = new FormData();
+                    form.append("nameCate", nameCate);
+                    form.append("description", description);
+
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/AdminCate/AddCate", true);
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var content = xhr.responseText
+                            var json_ct = JSON.parse(content);
+                            if (json_ct.Data.status == "OK") {
+                                window.location = "/Admin/AdminCate/Index";
+
+
+                            }
+                        }
+                    }
+                    xhr.send(form);
+
+
+                }
+            } else {
+                var nameCate = $("#nameCate").val();
+                var idCate = $("#idcate").val();
+
+                var description = $("#description").val();
+                var messAdd = $("#messAdd");
+                if (nameCate == "" || description == "") {
+                    messAdd.html("vui lòng nhập đầy đủ")
+                } else {
+                    var form = new FormData();
+                    form.append("nameCate", nameCate);
+                    form.append("description", description);
+                    form.append("idcate", idCate);
+
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/AdminCate/EditCate", true);
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var content = xhr.responseText
+                            var json_ct = JSON.parse(content);
+                            if (json_ct.Data.status == "OK") {
+                                window.location = "/Admin/AdminCate/Index";
+
+
+                            }
+                        }
+                    }
+                    xhr.send(form);
+
+
+                }
+
+
+            }
+        }
+        function AddBook() {
+            isEdit = false
+        }
+        function EditCate(id) {
+            isEdit = true;
+            var id = $(`#btn_click-${id}`).data("id");
+            $("#idcate").val(id)
+            var name = $(`#btn_click-${id}`).data("namecate");
+            $("#nameCate").val(name)
+            var description = $(`#btn_click-${id}`).data("description");
+            $("#description").val(description)
+        }
+        function DeleteCate(id, name) {
+
+            alert("Việc xóa này sẽ dẫn đến mất hết các sách nằm trong danh mục này")
+            if (confirm("bạn có muốn xóa danh mục " + name + " không")) {
+
+                var form = new FormData();
+                form.append("id", id);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/AdminCate/DeleteCate", true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var content = xhr.responseText
+                        var json_ct = JSON.parse(content);
+                        if (json_ct.Data.status == "OK") {
+                            var idbookdelete = $(`#id-${id}`)
+                            idbookdelete.remove()
+
+                        }
+                    }
+                }
+                xhr.send(form);
+
+            }
+        }
+
+
+    </script>
+
+
+

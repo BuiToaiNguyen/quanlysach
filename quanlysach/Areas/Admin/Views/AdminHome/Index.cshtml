@@ -1,4 +1,5 @@
-﻿@model PagedList.IPagedList<quanlysach.Models.DB.Book>
+﻿
+@model PagedList.IPagedList<quanlysach.Models.DB.Book>
 @using PagedList.Mvc
 
 @{
@@ -16,31 +17,28 @@
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          rel="stylesheet"/>
+          rel="stylesheet" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          rel="stylesheet"/>
+          rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
-          rel="stylesheet"/>
+          rel="stylesheet" />
     <style>
         .pagination li {
             width: 50px !important;
             font-size: 20px;
         }
+
         .pagination .active {
             background-color: aqua;
             border-radius: 5px
-
-
         }
 
         .pagination a {
             display: block;
             text-align: center;
         }
-
-
     </style>
 
 }
@@ -52,42 +50,42 @@
 
 @using (Html.BeginForm("Index", "AdminHome", FormMethod.Get))
 {
-<div class="input-group left">
-    <div class="form-outline">
-        <input type="search" id="form1" class="form-control"  name="searchString" value="@search"/>
-        <label class="form-label" for="form1">Search Name Book</label>
-    </div>
-    <div class="form-outline ml-2">
-        <input type="search" id="form1" class="form-control"  name="searchAuthor" value="@searchAuthor" />
-        <label class="form-label" for="form1">Search By Author</label>
-    </div>
-    <div class="form-outline ml-2 mr-2">
-        <select class="select" data-mdb-filter="true" style="height: 100%" name="searchCate" >
-            <option value="0">Tất cả</option>
+    <div class="input-group left">
+        <div class="form-outline">
+            <input type="search" id="form1" class="form-control" name="searchString" value="@search" />
+            <label class="form-label" for="form1">Search Name Book</label>
+        </div>
+        <div class="form-outline ml-2">
+            <input type="search" id="form1" class="form-control" name="searchAuthor" value="@searchAuthor" />
+            <label class="form-label" for="form1">Search By Author</label>
+        </div>
+        <div class="form-outline ml-2 mr-2">
+            <select class="select" data-mdb-filter="true" style="height: 100%" name="searchCate">
+                <option value="0">Tất cả</option>
 
-            @for (int i=0;i<listCate.Count;i++)
-            {
-                if (searchCate == listCate[i].idcate)
+                @for (int i = 0; i < listCate.Count; i++)
                 {
-                    <option value=@listCate[i].idcate selected>@listCate[i].nametype</option>
+                    if (searchCate == listCate[i].idcate)
+                    {
+                        <option value=@listCate[i].idcate selected>@listCate[i].nametype</option>
+
+                    }
+                    else
+                    {
+                        <option value=@listCate[i].idcate>@listCate[i].nametype</option>
+
+                    }
+
 
                 }
-                else
-                {
-                    <option value=@listCate[i].idcate >@listCate[i].nametype</option>
+            </select>
+        </div>
 
-                }
-              
-                 
-            }        
-</select>
+
+        <button type="submit" class="btn btn-primary ">
+            <i class="fas fa-search"></i>
+        </button>
     </div>
-    
-
-    <button type="submit" class="btn btn-primary ">
-        <i class="fas fa-search"></i>
-    </button>
-</div>
 }
 
 
@@ -101,7 +99,7 @@
             </div>
             <div class="modal-body ">
                 <div class="form mb-2 " style="width:100%">
-                    <input type="text" id="namebook" class="form-control" placeholder="nhập tên sách"  style="width:100%"/>
+                    <input type="text" id="namebook" class="form-control" placeholder="nhập tên sách" style="width:100%" />
                 </div>
                 <div class="form mb-2">
                     <input type="text" id="nameauthor" class="form-control" placeholder="nhập tác giả" />
@@ -151,7 +149,7 @@
 </div>
 
 
-<table class="table table-success table-striped">
+<table class="table tab-content table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -206,7 +204,7 @@
 </table>
 <div class="center-block">
     <nav aria-label="Page navigation " style="width: 200px; margin:auto">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page , @searchString =search }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchString = search }))
 
     </nav>
 

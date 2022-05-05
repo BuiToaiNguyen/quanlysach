@@ -21,8 +21,9 @@ namespace quanlysach.Areas.Admin.Controllers
             }
 
             DBIO db = new DBIO();
+            DBIOCate db1 = new DBIOCate();
             var listBook = db.getListBook(page, pageSize, searchString,searchAuthor,searchCate);
-            var listCate = db.getListCategory();
+            var listCate = db1.getListCategory(1,100000);
             ViewBag.listBook=listBook;
             ViewBag.listcate = listCate;
 
@@ -118,16 +119,16 @@ namespace quanlysach.Areas.Admin.Controllers
 
         }
 
-        public ActionResult IndexCate(string id)
-        {
+        //public ActionResult IndexCate(string id)
+        //{
 
-            DBIO db = new DBIO();
-            var listCate = db.getListCategory();
-            var listBook = db.getListBook(1,100, "","",0);
-            ViewBag.listBook= listBook;
-            ViewBag.id = id;
-            return View(listCate);
-        }
+        //    DBIO db = new DBIO();
+        //    var listCate = db.getListCategory();
+        //    var listBook = db.getListBook(1,100, "","",0);
+        //    ViewBag.listBook= listBook;
+        //    ViewBag.id = id;
+        //    return View(listCate);
+        //}
 
         public void LogOut()
         {

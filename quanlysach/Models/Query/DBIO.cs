@@ -104,7 +104,7 @@ namespace quanlysach.Models.Query
 
 
 
-            return model.OrderBy(c=>c.idbook).ToPagedList(page,pageSize);
+            return model.OrderByDescending(c=>c.idbook).ToPagedList(page,pageSize);
         }
 
         public IEnumerable<Book> getListBookHome(int page,int pageSize,string searchString)
@@ -115,12 +115,9 @@ namespace quanlysach.Models.Query
                 model=model.Where(x => x.name.Contains(searchString));
             }
 
-            return model.OrderBy(c=>c.idbook).ToPagedList(page, pageSize);
+            return model.OrderByDescending(c=>c.idbook).ToPagedList(page, pageSize);
     }
-        public List<Category> getListCategory()
-        {
-            return db.Categories.ToList();
-        }
+   
 
         public void AddBook(string name, string nameauthor,int idctg,float price,string linkimg)
         {

@@ -21,6 +21,9 @@ namespace quanlysach.Models.DB
         [StringLength(255)]
         public string nametype { get; set; }
 
+        [StringLength(255)]
+        public string decription { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Book> Books { get; set; }
     }

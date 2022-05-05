@@ -149,7 +149,8 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHome\IndexCate.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminCate\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAuthor\Index.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\adminJS\adminIndex.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -195,7 +196,9 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminCateController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminAuthorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
@@ -206,6 +209,7 @@
     <Compile Include="Models\DB\MyDB.cs" />
     <Compile Include="Models\DB\User.cs" />
     <Compile Include="Models\Query\DBIO.cs" />
+    <Compile Include="Models\Query\DBIOCate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +231,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\Author\" />
     <Folder Include="Assets\img\" />
   </ItemGroup>
   <PropertyGroup>
