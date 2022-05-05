@@ -140,5 +140,5 @@ function Close() {
     $("#namebook").val("");
     $("#nameauthor").val("");
     $("#price").val("")
-    $("#linkimg").val("")
+    $("#linkimg").val("");
 }
