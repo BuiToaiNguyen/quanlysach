@@ -2,7 +2,7 @@
 @using PagedList.Mvc
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Indsssex";
     var index = @ViewBag.index;
     var listCate = @ViewBag.listCate;
     var listBook = @ViewBag.listBook;
@@ -23,7 +23,6 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
           rel="stylesheet"/>
-    <script src="https://pagination.js.org/dist/2.1.5/pagination.min.js"></script>
     <style>
         .pagination li {
             width: 50px !important;
@@ -98,7 +97,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Thêm/Sửa sách</h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" onlick="Close()"></button>
             </div>
             <div class="modal-body ">
                 <div class="form mb-2 " style="width:100%">
@@ -144,7 +143,7 @@
             <input type="text" id="id" class="form-control" hidden visible />
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">hủy bỏ</button>
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal" onclick="Close()">hủy bỏ</button>
                 <div type="button" class="btn btn-primary" onclick="SaveClick()" id="boxAddBook"> Lưu</div>
             </div>
         </div>

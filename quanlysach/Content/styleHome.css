@@ -56,7 +56,6 @@
 
 }
 .body-content {
-    height: 100%;
 }
 .footer {
     bottom: 0;
@@ -74,7 +73,21 @@
     margin-top: auto;
     margin-bottom: auto;
 }
-.navbar-brand {
-    background-color: cadetblue;
-    border-radius: 10px;
+.btn_login {
+    padding: 6px 10px;
+    margin-right: 16px;
+    border: 1px;
+    display: block;
+}
+.link_login {
+    color: antiquewhite;
+    display: block;
+    font-size: 12px !important;
+    width: 70px;
+    height: 36px;
+    text-align: center;
+    line-height: 3;
+    background-color: darkseagreen;
+    border-radius: 5px;
+    margin-left: 10px;
 }

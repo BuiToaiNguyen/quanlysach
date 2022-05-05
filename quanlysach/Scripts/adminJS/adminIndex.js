@@ -1,11 +1,4 @@
 ﻿
-$('#pagination-demo').twbsPagination({
-    totalPages: 35,
-    visiblePages: 7,
-    onPageClick: function (event, page) {
-        $('#page-content').text('Page ' + page);
-    }
-});
 
 isEdit = false;
 
@@ -59,8 +52,6 @@ function EditBook(id) {
     $("#price").val(price);
     var linkimg = $(`#btnclick-${id}`).data("linkimg")
     $("#linkimg").val(linkimg);
-    //$("#nameauthor") = $(`#btnclick-${id}`).data("nameauthor")
-    // $("#idctg") = $(`#btnclick-${id}`).data("nameauthor")
 
     isEdit = true
 }
@@ -141,6 +132,13 @@ function SaveClick() {
 
             }
             xhr.send(form)
-        }
+        } 
     }
+}
+
+function Close() {
+    $("#namebook").val("");
+    $("#nameauthor").val("");
+    $("#price").val("")
+    $("#linkimg").val("")
 }

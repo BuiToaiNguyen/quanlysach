@@ -43,7 +43,7 @@ namespace quanlysach.Controllers
                     Session["permission"] = null;
                     if (user.permission == 1)
                     {
-                        Session["permission"] = user;
+                        Session["permission"] = 1;
                     
                    js.Data = new
                    {
@@ -74,7 +74,7 @@ namespace quanlysach.Controllers
 
             }
  
-
+            
 
 
             

@@ -22,7 +22,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand text_logo" href="/">SáchMới.Net</a>
+        <a class=" text_logo" href="/">SáchMới.Net</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -45,12 +45,16 @@
                     @Html.ActionLink("Đăng xuất", "LogOut", "AdminHome", new { area = "admin" }, new { @class = "navbar-brand" })
 
                 </div>
+                if (@Session["permission"] != null)
+                {
+                    <a href="/admin/adminHome/index"style="color:antiquewhite ">đến trang Admin </a>
+                }
 
             }
             else
             {
-                <div class="btn_login">
-                    @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "navbar-brand" })
+                <div class="">
+                    <a href="/Login" class="link_login"> Đăng nhập</a>
 
                 </div>
             }
@@ -70,7 +74,7 @@
        
 </div>
 <footer class=" bg-primary footer ">
-    <p>© 2017 - 2022 Sách Mới.Net - Thư viện Ebook miễn phí
+    <p>©2017 - 2022 Sách Mới.Net - Thư viện Ebook miễn phí
     </p>
     <p>Điều khoản sử dụng - Chính sách bảo mật</p>
 </footer>
