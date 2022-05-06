@@ -119,16 +119,6 @@ namespace quanlysach.Areas.Admin.Controllers
 
         }
 
-        //public ActionResult IndexCate(string id)
-        //{
-
-        //    DBIO db = new DBIO();
-        //    var listCate = db.getListCategory();
-        //    var listBook = db.getListBook(1,100, "","",0);
-        //    ViewBag.listBook= listBook;
-        //    ViewBag.id = id;
-        //    return View(listCate);
-        //}
 
         public void LogOut()
         {

@@ -91,3 +91,6 @@
     border-radius: 5px;
     margin-left: 10px;
 }
+.ctn {
+    min-height: 1200px !important
+}

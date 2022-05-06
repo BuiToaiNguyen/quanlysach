@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "sssss";
+    ViewBag.Title = "sssssss";
     Layout = null;
 }
 
@@ -16,6 +16,9 @@
     <link href="~/Content/styleLogin.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <style>
+       
+    </style>
 </head>
 <body>
 <div class="header_login">
@@ -33,22 +36,22 @@
 
 
             <form class="form_login">
-                <!-- Email input -->
                 <div class="form-outline mb-4">
-                    <input type="text" class="form-control" id="name" placeholder="nhập tên" style="font-size: 20px" />
+                    <label for="name" style="font-size: 30px" >nhập tài khoản</label>
+                    <input type="text" class="form-control" id="name" placeholder="nhập tên" style="font-size: 20px; height: 60px"/>
                 </div>
 
-                <!-- Password input -->
+
                 <div class="form-outline mb-4">
-                    <input type="password" id="password" class="form-control" placeholder="nhập mật khẩu" style="font-size: 20px" />
+                    <label for="password" style="font-size: 30px">nhập mật khẩu</label>
+
+                    <input type="password" id="password" class="form-control" placeholder="nhập mật khẩu" style="font-size: 20px; height: 60px"/>
                 </div>
 
-                <!-- 2 column grid layout for inline styling -->
-                <!-- Submit button -->
+
                 <div class="btn btn-primary btn-block mb-4 btn_login" onclick="login()">Đăng Nhập</div>
 
 
-                <!-- Register buttons -->
 
             </form>
         </div>

@@ -15,15 +15,17 @@ namespace quanlysach.Models.DB
         [StringLength(100)]
         public string name { get; set; }
 
-        [StringLength(100)]
-        public string nameauthor { get; set; }
-
         public int? idctg { get; set; }
 
         public double? price { get; set; }
 
         [StringLength(255)]
         public string linkimg { get; set; }
+
+        public int? idauthor { get; set; }
+
+        [StringLength(255)]
+        public string nameauthor { get; set; }
 
         public virtual Category Category { get; set; }
     }

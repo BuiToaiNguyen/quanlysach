@@ -22,7 +22,7 @@ namespace quanlysach.Areas.Admin.Controllers
             DBIO db = new DBIO();
             DBIOCate db1 = new DBIOCate();
             var listCate = db1.getListCategory(page,pageSize, searchString);
-            var listBook = db.getListBook(1, 1000000000, "", "", 0);
+            var listBook = db.getListBook(1, 99999, "", "", 0);
             ViewBag.listBook = listBook;
             ViewBag.searchString=searchString;
 

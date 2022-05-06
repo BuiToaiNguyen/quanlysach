@@ -38,7 +38,7 @@ namespace quanlysach.Models.Query
             {
                 model = model.Where(x => x.nametype.Contains(searchString));
             }
-            return model.OrderByDescending(c => c.idcate).ToPagedList(page, pageSize);
+            return model.OrderBy(c => c.idcate).ToPagedList(page, pageSize);
         }
 
 
